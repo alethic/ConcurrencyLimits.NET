@@ -67,7 +67,7 @@ public sealed class LifoBlockingLimiter<TContext> : ILimiter<TContext>
         // Clamp: context-derived timeouts (e.g. deadline - now) can be negative or exceed
         // int.MaxValue; ManualResetEventSlim.Wait throws on values below -1 and the raw
         // cast would overflow. 0 polls the latch without blocking.
-        public bool Await(long timeoutMillis) => _latch.Wait((int)Math.Clamp(timeoutMillis, 0, int.MaxValue));
+        public bool Await(long timeoutMillis) => _latch.Wait((int)Compat.Clamp(timeoutMillis, 0, int.MaxValue));
 
         public void Set(IListener? listener)
         {

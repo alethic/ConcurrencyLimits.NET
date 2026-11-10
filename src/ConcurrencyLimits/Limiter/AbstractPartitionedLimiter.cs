@@ -96,7 +96,7 @@ public abstract class AbstractPartitionedLimiter<TContext> : AbstractLimiter<TCo
         Preconditions.CheckArgument(state.Partitions.Values.Sum(p => p.GetPercent()) <= 1.0 + 1e-9,
             "Sum of percentages must be <= 1.0");
 
-        _partitions = new Dictionary<string, Partition>(state.Partitions);
+        _partitions = state.Partitions.ToDictionary(p => p.Key, p => p.Value);
         foreach (Partition partition in _partitions.Values)
         {
             partition.CreateMetrics(builder.Registry);
@@ -153,7 +153,7 @@ public abstract class AbstractPartitionedLimiter<TContext> : AbstractLimiter<TCo
             try
             {
                 Interlocked.Increment(ref _delayedThreads);
-                Thread.Sleep((int)Math.Clamp(partition.BackoffMillis, 0, int.MaxValue));
+                Thread.Sleep((int)Compat.Clamp(partition.BackoffMillis, 0, int.MaxValue));
             }
             finally
             {
@@ -173,7 +173,7 @@ public abstract class AbstractPartitionedLimiter<TContext> : AbstractLimiter<TCo
         }
     }
 
-    public Partition? GetPartition(string name) => _partitions.GetValueOrDefault(name);
+    public Partition? GetPartition(string name) => _partitions.TryGetValue(name, out var partition) ? partition : null;
 
     private sealed class PartitionReleasingListener(IListener listener, Partition partition) : IListener
     {

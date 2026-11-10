@@ -10,7 +10,7 @@ namespace ConcurrencyLimits.Limit;
 /// </summary>
 public sealed class AIMDLimit : AbstractLimit
 {
-    private static readonly long DefaultTimeoutNanos = (long)TimeSpan.FromSeconds(5).TotalNanoseconds;
+    private static readonly long DefaultTimeoutNanos = (long)Compat.TotalNanoseconds(TimeSpan.FromSeconds(5));
 
     public sealed class Builder
     {
@@ -50,7 +50,7 @@ public sealed class AIMDLimit : AbstractLimit
         public Builder Timeout(TimeSpan timeout)
         {
             Preconditions.CheckArgument(timeout > TimeSpan.Zero, "Timeout must be positive");
-            TimeoutNanos = (long)timeout.TotalNanoseconds;
+            TimeoutNanos = (long)Compat.TotalNanoseconds(timeout);
             return this;
         }
 

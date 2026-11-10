@@ -1,3 +1,5 @@
+using ConcurrencyLimits.Internal;
+
 namespace ConcurrencyLimits.Limit.Window;
 
 public sealed class ImmutablePercentileSampleWindow : ISampleWindow
@@ -63,7 +65,7 @@ public sealed class ImmutablePercentileSampleWindow : ISampleWindow
         Array.Sort(copy);
 
         int rttIndex = (int)Math.Floor(_sampleCount * _percentile + 0.5);
-        int zeroBasedRttIndex = Math.Clamp(rttIndex - 1, 0, _sampleCount - 1);
+        int zeroBasedRttIndex = Compat.Clamp(rttIndex - 1, 0, _sampleCount - 1);
         return copy[zeroBasedRttIndex];
     }
 

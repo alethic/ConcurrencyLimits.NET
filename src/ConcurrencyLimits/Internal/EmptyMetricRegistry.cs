@@ -10,6 +10,8 @@ public sealed class EmptyMetricRegistry : IMetricRegistry
     {
         public static readonly EmptySampleListener Instance = new();
         public void AddSample(double value) { }
+        public void AddLongSample(long value) { }
+        public void AddDoubleSample(double value) { }
     }
 
     public IMetricRegistry.ISampleListener Distribution(string id, params string[] tagNameValuePairs)

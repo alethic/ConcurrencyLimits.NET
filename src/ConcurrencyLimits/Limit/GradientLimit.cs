@@ -159,7 +159,7 @@ public sealed class GradientLimit : AbstractLimit
         {
             return Disabled;
         }
-        return _probeInterval + Random.Shared.Next(_probeInterval);
+        return _probeInterval + Compat.Random.Next(_probeInterval);
     }
 
     protected override int Update(long startTime, long rtt, int inflight, bool didDrop)

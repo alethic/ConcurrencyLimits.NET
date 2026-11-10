@@ -5,9 +5,9 @@ namespace ConcurrencyLimits.Limit;
 
 public sealed class WindowedLimit : ILimit
 {
-    private static readonly long DefaultMinWindowTime = (long)TimeSpan.FromSeconds(1).TotalNanoseconds;
-    private static readonly long DefaultMaxWindowTime = (long)TimeSpan.FromSeconds(1).TotalNanoseconds;
-    private static readonly long DefaultMinRttThreshold = (long)TimeSpan.FromMicroseconds(100).TotalNanoseconds;
+    private static readonly long DefaultMinWindowTime = (long)Compat.TotalNanoseconds(TimeSpan.FromSeconds(1));
+    private static readonly long DefaultMaxWindowTime = (long)Compat.TotalNanoseconds(TimeSpan.FromSeconds(1));
+    private static readonly long DefaultMinRttThreshold = (long)Compat.TotalNanoseconds(Compat.FromMicroseconds(100));
 
     /// <summary>Minimum observed samples to filter out sample windows with not enough significant samples.</summary>
     private const int DefaultWindowSize = 10;
@@ -25,14 +25,14 @@ public sealed class WindowedLimit : ILimit
         public Builder MinWindowTimeOf(TimeSpan minWindowTime)
         {
             Preconditions.CheckArgument(minWindowTime.TotalMilliseconds >= 100, "minWindowTime must be >= 100 ms");
-            MinWindowTime = (long)minWindowTime.TotalNanoseconds;
+            MinWindowTime = (long)Compat.TotalNanoseconds(minWindowTime);
             return this;
         }
 
         public Builder MaxWindowTimeOf(TimeSpan maxWindowTime)
         {
             Preconditions.CheckArgument(maxWindowTime.TotalMilliseconds >= 100, "maxWindowTime must be >= 100 ms");
-            MaxWindowTime = (long)maxWindowTime.TotalNanoseconds;
+            MaxWindowTime = (long)Compat.TotalNanoseconds(maxWindowTime);
             return this;
         }
 
@@ -45,7 +45,7 @@ public sealed class WindowedLimit : ILimit
 
         public Builder MinRttThresholdOf(TimeSpan threshold)
         {
-            MinRttThreshold = (long)threshold.TotalNanoseconds;
+            MinRttThreshold = (long)Compat.TotalNanoseconds(threshold);
             return this;
         }
 

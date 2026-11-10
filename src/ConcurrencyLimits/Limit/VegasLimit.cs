@@ -160,7 +160,7 @@ public class VegasLimit : AbstractLimit
         _rttSampleListener = builder.Registry.Distribution(MetricIds.MinRttName);
     }
 
-    private void ResetProbeJitter() => _probeJitter = Random.Shared.NextDouble() * 0.5 + 0.5;
+    private void ResetProbeJitter() => _probeJitter = Compat.Random.NextDouble() * 0.5 + 0.5;
 
     private bool ShouldProbe() => _probeJitter * _probeMultiplier * _estimatedLimit <= _probeCount;
 

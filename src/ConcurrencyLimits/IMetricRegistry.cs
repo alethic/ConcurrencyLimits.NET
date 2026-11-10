@@ -10,9 +10,15 @@ public interface IMetricRegistry
     {
         void AddSample(double value);
 
+#if NETCOREAPP3_0_OR_GREATER
         void AddLongSample(long value) => AddSample(value);
 
         void AddDoubleSample(double value) => AddSample(value);
+#else
+        void AddLongSample(long value);
+
+        void AddDoubleSample(double value);
+#endif
     }
 
     public interface ICounter
@@ -37,7 +43,11 @@ public interface IMetricRegistry
     /// <summary>
     /// Create a counter that will be incremented when an event occurs.
     /// </summary>
+#if NETCOREAPP3_0_OR_GREATER
     ICounter Counter(string id, params string[] tagNameValuePairs) => NoopCounter.Instance;
+#else
+    ICounter Counter(string id, params string[] tagNameValuePairs);
+#endif
 }
 
 internal sealed class NoopCounter : IMetricRegistry.ICounter

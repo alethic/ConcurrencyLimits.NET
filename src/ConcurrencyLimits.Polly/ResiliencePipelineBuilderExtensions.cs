@@ -13,8 +13,8 @@ public static class ResiliencePipelineBuilderExtensions
     public static TBuilder AddConcurrencyLimit<TBuilder>(this TBuilder builder, ILimiter<ResilienceContext> limiter)
         where TBuilder : ResiliencePipelineBuilderBase
     {
-        ArgumentNullException.ThrowIfNull(builder);
-        ArgumentNullException.ThrowIfNull(limiter);
+        if (builder is null) throw new ArgumentNullException(nameof(builder));
+        if (limiter is null) throw new ArgumentNullException(nameof(limiter));
         return builder.AddConcurrencyLimit(new ConcurrencyLimitStrategyOptions { Limiter = limiter });
     }
 
@@ -24,8 +24,8 @@ public static class ResiliencePipelineBuilderExtensions
     public static TBuilder AddConcurrencyLimit<TBuilder>(this TBuilder builder, ConcurrencyLimitStrategyOptions options)
         where TBuilder : ResiliencePipelineBuilderBase
     {
-        ArgumentNullException.ThrowIfNull(builder);
-        ArgumentNullException.ThrowIfNull(options);
+        if (builder is null) throw new ArgumentNullException(nameof(builder));
+        if (options is null) throw new ArgumentNullException(nameof(options));
 
         builder.AddStrategy(
             _ => new ConcurrencyLimitStrategy(options.Limiter, options.RejectionExceptionFactory),

@@ -1,6 +1,8 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
+    <TargetFramework></TargetFramework>
+    <TargetFrameworks>netstandard2.0;net10.0</TargetFrameworks>
     <RootNamespace>ConcurrencyLimits.Polly</RootNamespace>
     <AssemblyName>ConcurrencyLimits.Polly</AssemblyName>
     <Description>Polly v8 resilience pipeline integration for ConcurrencyLimits.</Description>
